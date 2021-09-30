@@ -113,17 +113,11 @@ module.exports = {
                             }
                         })
                     }
-
-
                 })
             } else {
                 console.log(err);
             }
-
         })
-
-       
-
     },
 
     deluser: function (req, res, id) {
@@ -146,4 +140,5 @@ module.exports = {
             })
         })
     }
+    
 }
