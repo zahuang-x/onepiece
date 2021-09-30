@@ -16,6 +16,8 @@ module.exports = {
                 controller.getedit(req,res,urls.query.id);
             }else if(urls.pathname == '/editpost'){
                 controller.editpost(req,res,urls.query.id);
+            }else if(urls.pathname == '/add'){
+                controller.getAddHtml(req,res);
             }else if(urls.pathname == '/deluser'){
                 controller.deluser(req,res,urls.query.id);
             }else{

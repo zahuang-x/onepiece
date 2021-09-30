@@ -84,6 +84,23 @@ module.exports = {
         })
     },
 
+    getAddHtml:function(req,res){
+        fs.readFile('./add.html',function(err,data){
+            res.end(data);
+        })
+    },
+
+    ajaxAdd:function(req,res){
+        var pd = '';
+        req.on('data',function(err,post_data){
+            pd += post_data;
+        })
+        req.on('end',function(){
+            console.log(pd);
+        })
+        res.end('');
+    },
+
     deluser: function (req, res, id) {
         fs.readFile('./db.json', 'utf8', function (err, json_str) {
             var json_arr = JSON.parse(json_str);

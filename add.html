@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 800px;
+            height: 500px;
+        }
+
+        td {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/" method="post" enctype="application/x-www-form-urlencoded">
+        <table>
+            <tr>
+                <td>姓名</td>
+                <td>
+                    <input name="name" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td>能力</td>
+                <td>
+                    <input name="nengli" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td>集团</td>
+                <td>
+                    <input name="jituan" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td>上传图片</td>
+                <td>
+                    <input name="img" type="file">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="button" value="确认添加" id="btn">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script>
+    // 注释 绑定事件
+    document.getElementById('btn').onclick = function () {
+         // alert(23)
+        // 发送ajax请求
+
+        // 请求方式是post 
+
+        // 要将请求的数据放入send方法中(http只支持字符串数据传输) name=123&age=99
+
+        // 服务器需要接受post请求(直接使用formidable就可以了)
+
+        // 服务器接收数据后，写入json文件，然后返回1或0 
+
+        // ajax 接受1或0后判断并跳转到首页展示数据
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4){
+                if(xhr.responseText==1){
+                    alert('小伙子棒棒哒')
+                    location.href = '/'
+                }else{
+                    alert('去死');
+                }
+            }
+        }
+        // 组装send要发送的数据
+        // 'name=lisi&nerngli=lkasdfj&jituan=dksfa'
+        var inps = document.getElementsByTagName('input');
+        // 拼接字符串，用于send提交
+        var inpData = 'name='+inps[0].value+'&nengli='+inps[1].value+'&jituan='+inps[2].value;
+        // console.log(inpData);
+        // 后台使用fd处理，需要将数据使用encodeURI方法先进行url转码
+        inpData = encodeURI(inpData);
+        // console.log(inpData);
+        
+        xhr.open('post','http://127.0.0.1:9000/ajaxAdd');
+        // 设置请求头，表明请求数据是经过url编码的数据
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+        xhr.send(inpData);
+    }
+</script>
+</html>
