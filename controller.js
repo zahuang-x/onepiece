@@ -142,7 +142,6 @@ module.exports = {
                     res.end('<script>alert("删除成功");location.href="/"</script>');
                 } else {
                     res.end('<script>alert("删除失败");location.href="/"</script>');
-
                 }
             })
         })
