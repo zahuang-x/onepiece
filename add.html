@@ -59,7 +59,7 @@
 <script>
     // 注释 绑定事件
     document.getElementById('btn').onclick = function () {
-         // alert(23)
+        // alert(23)
         // 发送ajax请求
 
         // 请求方式是post 
@@ -72,12 +72,12 @@
 
         // ajax 接受1或0后判断并跳转到首页展示数据
         var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState == 4){
-                if(xhr.responseText==1){
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.responseText == 1) {
                     alert('小伙子棒棒哒')
                     location.href = '/'
-                }else{
+                } else {
                     alert('去死');
                 }
             }
@@ -86,16 +86,17 @@
         // 'name=lisi&nerngli=lkasdfj&jituan=dksfa'
         var inps = document.getElementsByTagName('input');
         // 拼接字符串，用于send提交
-        var inpData = 'name='+inps[0].value+'&nengli='+inps[1].value+'&jituan='+inps[2].value;
+        var inpData = 'name=' + inps[0].value + '&nengli=' + inps[1].value + '&jituan=' + inps[2].value;
         // console.log(inpData);
         // 后台使用fd处理，需要将数据使用encodeURI方法先进行url转码
         inpData = encodeURI(inpData);
         // console.log(inpData);
-        
-        xhr.open('post','http://127.0.0.1:9000/ajaxAdd');
+
+        xhr.open('post', 'http://127.0.0.1:9000/ajaxAdd');
         // 设置请求头，表明请求数据是经过url编码的数据
-        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         xhr.send(inpData);
     }
 </script>
+
 </html>

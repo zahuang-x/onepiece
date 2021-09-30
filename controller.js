@@ -84,21 +84,46 @@ module.exports = {
         })
     },
 
-    getAddHtml:function(req,res){
-        fs.readFile('./add.html',function(err,data){
-            res.end(data);
+    getAddHtml: function (req, res) {
+        fs.readFile('./add.html', function (err, html_data) {
+            res.end(html_data);
         })
     },
 
-    ajaxAdd:function(req,res){
-        var pd = '';
-        req.on('data',function(err,post_data){
-            pd += post_data;
+    ajaxAdd: function (req, res) {
+        var fd = require('formidable');
+        var form = new fd.IncomingForm();
+        form.parse(req, function (err, filds, files) {
+            if (!err) {
+                fs.readFile('./db.json', 'utf8', function (err, json_str) {
+                    if (!err) {
+                        var json_arr = JSON.parse(json_str);
+                        var last_arr = json_arr[json_arr.length - 1];
+                        
+                        filds.id = last_arr.id + 1;
+                        filds.img = '';
+                        // console.log(pushdata);
+                        json_arr.push(filds);
+                        // console.log(json_arr)
+                        fs.writeFile('./db.json', JSON.stringify(json_arr), function (err) {
+                            if (!err) {
+                                res.end('1')
+                            } else {
+                                res.end('0')
+                            }
+                        })
+                    }
+
+
+                })
+            } else {
+                console.log(err);
+            }
+
         })
-        req.on('end',function(){
-            console.log(pd);
-        })
-        res.end('');
+
+       
+
     },
 
     deluser: function (req, res, id) {
