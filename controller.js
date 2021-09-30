@@ -91,34 +91,41 @@ module.exports = {
     },
 
     ajaxAdd: function (req, res) {
+        // 利用fd接收处理post请求的数据
         var fd = require('formidable');
         var form = new fd.IncomingForm();
+        // 如果文件移动跨盘符依然需要提前设置上传文件的路径
+        // form.uploadDir = 'D:\\img'
         form.parse(req, function (err, filds, files) {
-            if (!err) {
+            // console.log(filds); // 表单数据
+            // console.log(files); // 上传文件的数据 
+            // 需要将上传后的文件移动到指定目录
+            fs.rename(files.img.path, './img/' + files.img.name, function (err) {
+                // 获取json数据进行解析
                 fs.readFile('./db.json', 'utf8', function (err, json_str) {
-                    if (!err) {
-                        var json_arr = JSON.parse(json_str);
-                        var last_arr = json_arr[json_arr.length - 1];
-                        
-                        filds.id = last_arr.id + 1;
-                        filds.img = '';
-                        // console.log(pushdata);
-                        json_arr.push(filds);
-                        // console.log(json_arr)
-                        fs.writeFile('./db.json', JSON.stringify(json_arr), function (err) {
-                            if (!err) {
-                                res.end('1')
-                            } else {
-                                res.end('0')
-                            }
-                        })
-                    }
+                    var json_arr = JSON.parse(json_str);
+                    // 组装新数据
+                    // id 获取数组中最后一个元素的id+1,就是新数组的id值
+                    filds.id = json_arr[json_arr.length - 1].id + 1;
+                    // 将已经移动好的图片地址加到新数据里面
+                    filds.img = '/img/' + files.img.name;
+                    // 将新数据加入数组中
+                    json_arr.push(filds);
+
+                    // 将数组重新转为字符串写入josn文件
+                    fs.writeFile('./db.json', JSON.stringify(json_arr), function (err) {
+                        if (!err) {
+                            // 返回提示信息
+                            res.end('1');
+                        } else {
+                            res.end('0');
+                        }
+                    })
                 })
-            } else {
-                console.log(err);
-            }
+            })
         })
     },
+
 
     deluser: function (req, res, id) {
         fs.readFile('./db.json', 'utf8', function (err, json_str) {
@@ -140,5 +147,5 @@ module.exports = {
             })
         })
     }
-    
+
 }

@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <form action="/" method="post" enctype="application/x-www-form-urlencoded">
+    <form id="fm" action="/" method="post" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>姓名</td>
@@ -59,18 +59,6 @@
 <script>
     // 注释 绑定事件
     document.getElementById('btn').onclick = function () {
-         // alert(23)
-        // 发送ajax请求
-
-        // 请求方式是post 
-
-        // 要将请求的数据放入send方法中(http只支持字符串数据传输) name=123&age=99
-
-        // 服务器需要接受post请求(直接使用formidable就可以了)
-
-        // 服务器接收数据后，写入json文件，然后返回1或0 
-
-        // ajax 接受1或0后判断并跳转到首页展示数据
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
             if(xhr.readyState == 4){
@@ -78,24 +66,22 @@
                     alert('小伙子棒棒哒')
                     location.href = '/'
                 }else{
-                    alert('去死');
+                    alert('哎呀我去');
                 }
             }
         }
-        // 组装send要发送的数据
-        // 'name=lisi&nerngli=lkasdfj&jituan=dksfa'
-        var inps = document.getElementsByTagName('input');
-        // 拼接字符串，用于send提交
-        var inpData = 'name='+inps[0].value+'&nengli='+inps[1].value+'&jituan='+inps[2].value;
-        // console.log(inpData);
-        // 后台使用fd处理，需要将数据使用encodeURI方法先进行url转码
-        inpData = encodeURI(inpData);
-        // console.log(inpData);
+        // 获取整个form表单
+        var fm = document.getElementById('fm');
+        // 利用formData将整个表单数据打包
+        var fd = new FormData(fm);
+        // console.log(fd);
         
         xhr.open('post','http://127.0.0.1:8000/ajaxAdd');
-        // 设置请求头，表明请求数据是经过url编码的数据
-        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-        xhr.send(inpData);
+        // 打成的数据包可以直接通过send发送
+        xhr.send(fd);
+       
     }
+
 </script>
+
 </html>
